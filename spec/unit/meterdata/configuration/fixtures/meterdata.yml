@@ -1,0 +1,5 @@
+---
+generators:
+  - name: Meterdata::Specs::Generator
+    require_path: foo
+    options: {}

@@ -1,0 +1,5 @@
+---
+generators:
+  - name: Foo
+    require_path: foo
+    options: {}
