@@ -1,5 +1,6 @@
 require 'erb'
 
+require 'meterdata-core/utils'
 require 'meterdata-core/exception'
 
 module Meterdata
@@ -36,7 +37,7 @@ module Meterdata
       extend ClassMethods
 
       def parse
-        Configuration.new(generators)
+        Configuration.new(generators, publishers)
       end
 
     private
@@ -60,8 +61,16 @@ module Meterdata
       end
 
       def generators
+        return [] unless config['generators']
         config['generators'].map do |config|
-          Generator.new(config['name'], config['require_path'], config['options'])
+          Generator.new(config)
+        end
+      end
+
+      def publishers
+        return [] unless config['publishers']
+        config['publishers'].map do |config|
+          Publisher.new(config)
         end
       end
 
@@ -83,19 +92,32 @@ module Meterdata
 
     end # class Parser
 
-
-    class Generator
+    module Component
 
       class IncompleteError < Meterdata::Exception
       end
 
-      attr_reader :name
-      attr_reader :require_path
-      attr_reader :options
+      include Meterdata::Utils
 
-      def initialize(name, require_path, options = {})
-        @name, @require_path, @options = name, require_path, options
-        raise IncompleteError, "The following generator key(s) are missing: #{missing_keys.join(', ')}" unless valid?
+      def self.included(host)
+        host.class_eval do
+          attr_reader :version
+          attr_reader :name
+          attr_reader :require_path
+        end
+      end
+
+      def initialize(config)
+        @version      = config['version']
+        @name         = config['name']
+        @require_path = config['require_path']
+        @options      = config['options']
+
+        raise IncompleteError, error_message unless valid?
+      end
+
+      def options
+        @options ||= {}
       end
 
     private
@@ -109,10 +131,26 @@ module Meterdata
       end
 
       def required_keys
-        %w[name require_path]
+        %w[version name require_path]
       end
 
-    end # class Generator
+      def error_message
+        "The following #{component_name} key(s) are missing: #{missing_keys.join(', ')}"
+      end
+
+      def component_name
+        demodulize(self.class.name).downcase
+      end
+
+    end
+
+    class Generator
+      include Component
+    end
+
+    class Publisher
+      include Component
+    end
 
 
     module ClassMethods # TODO use idiomatic ruby once solid and heckled
@@ -127,11 +165,13 @@ module Meterdata
 
 
     attr_reader :generators
+    attr_reader :publishers
 
   private
 
-    def initialize(generators)
-      @generators = generators
+    def initialize(generators, publishers)
+      @generators = generators || []
+      @publishers = publishers || []
     end
 
   end # class Configuration

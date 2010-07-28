@@ -1,5 +1,6 @@
 ---
 generators:
-  - name: Meterdata::Specs::Generator
+  - version: 0.0.1
+    name: Meterdata::Specs::Generator
     require_path: <%= Meterdata::Specs.root.join('unit/meterdata/generator/fixtures/generator') %>
     options: {}

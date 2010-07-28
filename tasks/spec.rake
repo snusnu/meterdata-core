@@ -25,7 +25,7 @@ begin
   end
 
   RCov::VerifyTask.new(:verify_rcov => :rcov) do |rcov|
-    rcov.threshold = 100
+    rcov.threshold = 84.49
   end
 rescue LoadError
   %w[ rcov verify_rcov ].each do |name|

@@ -2,15 +2,15 @@ require 'spec_helper'
 
 require 'meterdata-core/configuration'
 
+require File.expand_path('../../component/options_spec', __FILE__)
+
 describe 'Meterdata::Configuration::Generator#options' do
 
   subject { generator.options }
 
-  let(:name)         { 'foo' }
-  let(:require_path) { 'foo' }
-  let(:options)      {  {}   }
-  let(:generator)    { Meterdata::Configuration::Generator.new(name, require_path, options) }
+  let(:klass)     { Meterdata::Configuration::Generator }
+  let(:generator) { component }
 
-  it { should == {} }
+  it_should_behave_like 'Meterdata::Configuration::Component#options'
 
 end

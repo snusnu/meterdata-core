@@ -8,8 +8,6 @@ describe 'Meterdata::Configuration.load' do
 
   subject { Meterdata::Configuration.load(path) }
 
-  let(:path) { File.expand_path('../../fixtures/valid_meterdata.yml', __FILE__) }
-
   it_should_behave_like 'a compliant configuration parser'
 
 end

@@ -84,7 +84,18 @@ begin
 
     ObjectSpace.each_object(Module) do |mod|
 
+      # only process objects in the Meterdata namespace
       next unless mod.name =~ /\A#{root_module}(?::|\z)/
+
+      # TODO think more about excluding this from heckling
+
+      excluded_modules = %w[
+        Meterdata::Component
+        Meterdata::Component::ClassMethods
+        Meterdata::Component::InstanceMethods
+      ]
+
+      next if excluded_modules.include?(mod.name)
 
       spec_prefix = spec_dir.join(mod.name.underscore)
 

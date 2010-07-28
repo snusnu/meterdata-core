@@ -1,22 +1,18 @@
 require 'spec_helper'
 
-require File.expand_path('../../fixtures/generator', __FILE__)
+shared_examples_for 'a successful generator run' do
 
-shared_examples_for 'a generator run' do
+  let(:expected_result) { %w[before_generate generate after_generate] }
+  let(:expected_errors) { [] }
 
-  its(:raw_output)      { should == 'raw output'      }
-  its(:analyzed_output) { should == 'analyzed output' }
-  its(:report)          { should == 'report'          }
+  it { should be_kind_of(Meterdata::Generator::Report) }
 
-  its(:hook_recorder) {
-    should == %w[
-      before_emit
-      after_emit
-      before_analyze
-      after_analyze
-      before_generate
-      after_generate
-    ]
-  }
+  it { should respond_to(:config) }
+  it { should respond_to(:result) }
+  it { should respond_to(:errors) }
+
+  its(:config) { should == config          }
+  its(:result) { should == expected_result }
+  its(:errors) { should == expected_errors }
 
 end

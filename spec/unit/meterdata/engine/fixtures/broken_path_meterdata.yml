@@ -1,5 +1,6 @@
 ---
 generators:
-  - name: Foo
+  - version: 0.0.1
+    name: Foo
     require_path: foo
     options: {}

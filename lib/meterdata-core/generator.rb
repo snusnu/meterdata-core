@@ -1,77 +1,76 @@
 require 'meterdata-core/utils'
+require 'meterdata-core/component'
 require 'meterdata-core/exception'
+require 'meterdata-core/configuration'
 
 module Meterdata
 
-  class UnsupportedGenerator < Meterdata::Exception
-  end
-
   class Generator
 
-    module ClassMethods # TODO use idiomatic ruby once solid and heckled
+    class UnsupportedGenerator < Meterdata::Exception
+    end
 
-      def run(name, options)
-        instantiate(name, options).run
-      end
+    class Report
 
-      def instantiate(name, options)
-        Object.full_const_get(name).new(options)
-      rescue NameError
-        raise UnsupportedGenerator, "The '#{name}' generator could not be found"
+      attr_reader :config
+      attr_reader :result
+      attr_reader :errors
+
+      def initialize(config, result, errors)
+        @config, @result, @errors = config, result, errors
       end
 
     end
 
+    include Component
+
+    module ClassMethods # TODO use idiomatic ruby once solid and heckled
+
+      def generate(config)
+        new(config).run
+      end
+
+      def new(config)
+        klass = component_class(config.name)
+        if klass == self
+          super
+        else
+          klass.new(config)
+        end
+      end
+
+    private
+
+      def component_not_found(name)
+        raise UnsupportedGenerator, error_msg(name)
+      end
+
+    end # module ClassMethods
+
     extend ClassMethods
 
-    attr_reader :options
+    attr_reader :config
 
     def run
-      _emit
-      _analyze
-      _generate
-      self
+      before_generate
+      result = generate
+      report = Report.new(config, result, errors)
+      after_generate
+      report
+    end
+
+    def generate
+      raise NotImplementedError, "#{self.class}#generate must be implemented"
     end
 
   private
 
-    def initialize(options)
-      @options = options
+    def initialize(config)
+      @config = config
     end
 
-    attr_accessor :raw_output
-    attr_accessor :analyzed_output
-    attr_accessor :report
-
-    def _emit
-      before_emit
-      self.raw_output = emit
-      after_emit
-      self
-    end
-
-    def _analyze
-      before_analyze
-      self.analyzed_output = analyze
-      after_analyze
-      self
-    end
-
-    def _generate
-      before_generate
-      self.report = generate
-      after_generate
-      self
-    end
-
-    def before_emit()     end
-    def after_emit()      end
-
-    def before_analyze()  end
-    def after_analyze()   end
-
-    def before_generate() end
-    def after_generate()  end
+    def before_generate; end
+    def after_generate;  end
 
   end # class Generator
 
