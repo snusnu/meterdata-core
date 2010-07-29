@@ -61,16 +61,17 @@ module Meterdata
       end
 
       def generators
-        return [] unless config['generators']
-        config['generators'].map do |config|
-          Generator.new(config)
-        end
+        components('generators', Generator)
       end
 
       def publishers
-        return [] unless config['publishers']
-        config['publishers'].map do |config|
-          Publisher.new(config)
+        components('publishers', Publisher)
+      end
+
+      def components(name, klass)
+        return [] unless config[name]
+        config[name].map do |config|
+          klass.new(config)
         end
       end
 
