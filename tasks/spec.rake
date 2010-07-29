@@ -24,8 +24,11 @@ begin
     rcov.rcov_opts = File.read('spec/rcov.opts').split(/\s+/)
   end
 
+  config    = YAML.load_file(File.expand_path('../../config/rcov.yml', __FILE__)).freeze
+  threshold = config.fetch('threshold').to_f
+
   RCov::VerifyTask.new(:verify_rcov => :rcov) do |rcov|
-    rcov.threshold = 84.49
+    rcov.threshold = threshold
   end
 rescue LoadError
   %w[ rcov verify_rcov ].each do |name|
