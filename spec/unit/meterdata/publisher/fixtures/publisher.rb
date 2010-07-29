@@ -20,7 +20,7 @@ module Meterdata
       def after_publish
         result << 'after_publish'
       end
-      
+
     end
   end
 end

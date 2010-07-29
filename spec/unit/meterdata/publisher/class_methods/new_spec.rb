@@ -49,11 +49,11 @@ describe 'Meterdata::Publisher.new' do
   end
 
   context 'when called on a subclass' do
-  
+
     subject { Meterdata::Publisher::Test.new(config, report) }
 
     it_should_behave_like 'instantiating a new publisher'
-  
+
   end
 
 end

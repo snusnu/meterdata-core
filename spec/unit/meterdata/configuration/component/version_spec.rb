@@ -9,5 +9,5 @@ shared_examples_for 'Meterdata::Configuration::Component#version' do
   }}
 
   it { should == '0.0.1' }
-  
+
 end

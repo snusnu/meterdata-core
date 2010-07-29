@@ -11,7 +11,7 @@ describe 'Meterdata::Configuration#publishers' do
   shared_examples_for 'the Meterdata::Configuration#publishers reader' do
 
     let(:configuration)   { Meterdata::Configuration.new(generators, publishers) }
-    
+
     it { should == expected_result }
 
   end

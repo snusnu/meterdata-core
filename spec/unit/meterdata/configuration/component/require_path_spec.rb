@@ -9,5 +9,5 @@ shared_examples_for 'Meterdata::Configuration::Component#require_path' do
   }}
 
   it { should == 'foo' }
-  
+
 end
