@@ -80,6 +80,35 @@ module Meterdata
 
       end
 
+      class VCS
+
+        class Git < VCS
+
+          def revision
+            @revision ||= begin
+              revision = `git rev-parse HEAD`
+              revision =~ /fatal: Not a git repository/ ? nil : revision
+            end
+          end
+
+        end
+
+        module ClassMethods # TODO use idiomatic ruby once solid and heckled
+
+          def revision
+            Git.new.revision # always git for now
+          end
+
+        end # module ClassMethods
+
+        extend ClassMethods
+
+        def revision
+          raise NotImplementedError, "Meterdata::Report::Metadata::VCS#revision must be implemented"
+        end
+
+      end
+
       attr_reader :engine
       attr_reader :timestamp
       attr_reader :revision
@@ -107,8 +136,7 @@ module Meterdata
       end
 
       def set_revision
-        git_output = `git rev-parse head`
-        @revision = (git_output =~ /fatal: Not a git repository/) ? nil : git_output
+        @revision = VCS.revision
       end
 
       def set_runtime
