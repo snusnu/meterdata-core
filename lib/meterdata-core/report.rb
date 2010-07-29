@@ -68,14 +68,14 @@ module Meterdata
       class Engine
 
         attr_reader :version
-        attr_reader :log
+        attr_reader :logs
 
         def initialize
-          @version, @log = Meterdata::VERSION, {}
+          @version, @logs = Meterdata::VERSION, {}
         end
 
         def log(level, key, message)
-          ((@log[level.to_s] ||= {})[key.to_s] ||= []) << message.to_s
+          ((@logs[level.to_s] ||= {})[key.to_s] ||= []) << message.to_s
         end
 
       end

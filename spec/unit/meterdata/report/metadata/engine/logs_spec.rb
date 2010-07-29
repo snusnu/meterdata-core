@@ -4,10 +4,10 @@ require 'meterdata-core/report'
 
 describe 'Meterdata::Report::Metadata::Engine#initialize' do
 
-  subject { engine.version }
+  subject { engine.logs }
 
   let(:engine) { Meterdata::Report::Metadata::Engine.new }
 
-  it { should == Meterdata::VERSION }
+  it { should == {} }
 
 end
