@@ -40,6 +40,22 @@ module Meterdata
         Configuration.new(generators, publishers)
       end
 
+      class JsonParser < Parser
+        private
+        def load
+          require 'json'
+          JSON.parse(erb_parsed_config)
+        end
+      end
+
+      class YamlParser < Parser
+        private
+        def load
+          require 'yaml'
+          YAML.load(erb_parsed_config)
+        end
+      end
+
     private
 
       def initialize(path)
@@ -72,22 +88,6 @@ module Meterdata
         return [] unless config[name]
         config[name].map do |config|
           klass.new(config)
-        end
-      end
-
-      class JsonParser < Parser
-        private
-        def load
-          require 'json'
-          JSON.parse(erb_parsed_config)
-        end
-      end
-
-      class YamlParser < Parser
-        private
-        def load
-          require 'yaml'
-          YAML.load(erb_parsed_config)
         end
       end
 
