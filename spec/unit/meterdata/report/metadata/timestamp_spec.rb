@@ -4,17 +4,15 @@ require 'meterdata-core/report'
 
 describe 'Meterdata::Report::Metadata#timestamp' do
 
+  let(:now)       { Time.mktime(1970,1,1) }
+  let(:metadata)  { Meterdata::Report::Metadata.new }
+
+  before(:all) do
+    Time.stub!(:now).and_return(now)
+  end
+
   subject { metadata.timestamp }
 
-  let(:now) { Time.now.to_i }
-
-  let(:metadata)  {
-    metadata = Meterdata::Report::Metadata.new
-    metadata.stub!(:timestamp).and_return(now)
-    metadata
-  }
-
-  it { should be_kind_of(Integer) }
-  it { should == now }
+  it { should == now.to_i }
 
 end
