@@ -8,6 +8,12 @@ describe 'Meterdata::Configuration::Generator#options' do
 
   subject { generator.options }
 
+  let(:config) {{
+    'version'      => '0.0.1',
+    'name'         => 'foo',
+    'require_path' => 'foo',
+  }}
+
   let(:klass)     { Meterdata::Configuration::Generator }
   let(:generator) { component }
 

@@ -8,6 +8,14 @@ describe 'Meterdata::Configuration::Publisher#version' do
 
   subject { publisher.version }
 
+  let(:version) { '0.0.1' }
+
+  let(:config) {{
+    'version'      => version,
+    'name'         => 'foo',
+    'require_path' => 'foo',
+  }}
+
   let(:publisher) { Meterdata::Configuration::Publisher.new(config) }
 
   it_should_behave_like 'Meterdata::Configuration::Component#version'
