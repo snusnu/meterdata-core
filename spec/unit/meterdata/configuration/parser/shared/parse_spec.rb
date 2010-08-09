@@ -62,34 +62,78 @@ end
 
 shared_examples_for 'a configuration parser parsing a valid configuration' do
 
-  let(:generator)    { subject.generators.first }
+  let(:publisher)    { subject.publishers.first }
+  its(:publishers) { should respond_to(:each) }
 
-  let(:name)         { generator.name           }
-  let(:require_path) { generator.require_path   }
-  let(:options)      { generator.options        }
 
-  it { should be_kind_of(Meterdata::Configuration) }
+  context 'generators' do
 
-  its(:generators) { should respond_to(:each) }
+    let(:generator)    { subject.generators.first }
 
-  it 'should only include instances of Meterdata::Configuration::Generator' do
-    subject.generators.all? { |g| g.kind_of?(Meterdata::Configuration::Generator) }.should be_true
+    let(:name)         { generator.name           }
+    let(:require_path) { generator.require_path   }
+    let(:options)      { generator.options        }
+
+
+    it { should be_kind_of(Meterdata::Configuration) }
+
+    its(:generators) { should respond_to(:each) }
+
+    it 'should only include instances of Meterdata::Configuration::Generator' do
+      subject.generators.all? { |g| g.kind_of?(Meterdata::Configuration::Generator) }.should be_true
+    end
+
+    it 'should include exactly one generator configuration' do
+      subject.generators.size.should == 1
+    end
+
+    it "should properly recognize a generator's name" do
+      name.should == 'Meterdata::Specs::Generator'
+    end
+
+    it "should properly recognize a generator's require_path" do
+      require_path.should == Meterdata::Specs.root.join('unit/meterdata/generator/fixtures/generator').to_s
+    end
+
+    it "should properly recognize a generator's options" do
+      options.should == {}
+    end
+
   end
 
-  it 'should include exactly one generator configuration' do
-    subject.generators.size.should == 1
-  end
+  context 'publishers' do
 
-  it "should properly recognize a generator's name" do
-    name.should == 'Meterdata::Specs::Generator'
-  end
+    let(:generator)    { subject.publishers.first }
 
-  it "should properly recognize a generator's require_path" do
-    require_path.should == Meterdata::Specs.root.join('unit/meterdata/generator/fixtures/generator').to_s
-  end
+    let(:name)         { publisher.name           }
+    let(:require_path) { publisher.require_path   }
+    let(:options)      { publisher.options        }
 
-  it "should properly recognize a generator's options" do
-    options.should == {}
+
+    it { should be_kind_of(Meterdata::Configuration) }
+
+    its(:publishers) { should respond_to(:each) }
+
+    it 'should only include instances of Meterdata::Configuration::Publisher' do
+      subject.publishers.all? { |g| g.kind_of?(Meterdata::Configuration::Publisher) }.should be_true
+    end
+
+    it 'should include exactly one publisher configuration' do
+      subject.publishers.size.should == 1
+    end
+
+    it "should properly recognize a publisher's name" do
+      name.should == 'Meterdata::Specs::Publisher'
+    end
+
+    it "should properly recognize a publisher's require_path" do
+      require_path.should == Meterdata::Specs.root.join('unit/meterdata/publisher/fixtures/publisher').to_s
+    end
+
+    it "should properly recognize a publisher's options" do
+      options.should == {}
+    end
+
   end
 
 end

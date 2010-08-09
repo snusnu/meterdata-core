@@ -4,3 +4,9 @@ generators:
     name: Meterdata::Specs::Generator
     require_path: <%= Meterdata::Specs.root.join('unit/meterdata/generator/fixtures/generator') %>
     options: {}
+
+publishers:
+  - version: 0.0.1
+    name: Meterdata::Specs::Publisher
+    require_path: <%= Meterdata::Specs.root.join('unit/meterdata/publisher/fixtures/publisher') %>
+    options: {}
