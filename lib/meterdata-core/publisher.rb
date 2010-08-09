@@ -36,8 +36,6 @@ module Meterdata
 
     extend ClassMethods
 
-    include Utils
-
     attr_reader :config
     attr_reader :report
 
