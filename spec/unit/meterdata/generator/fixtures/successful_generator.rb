@@ -2,7 +2,7 @@ require 'meterdata-core/generator'
 
 module Meterdata
   class Generator
-    class Test < Generator
+    class SuccessfulTest < Generator
 
       def generate
         result << 'generate'

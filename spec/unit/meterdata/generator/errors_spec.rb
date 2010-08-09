@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 require 'meterdata-core/generator'
-require File.expand_path('../fixtures/generator', __FILE__)
+require File.expand_path('../fixtures/successful_generator', __FILE__)
 
 describe 'Meterdata::Generator#errors' do
 
@@ -10,8 +10,8 @@ describe 'Meterdata::Generator#errors' do
   let(:config) {
     Meterdata::Configuration::Generator.new({
       'version'      => '0.0.1',
-      'name'         => 'Test',
-      'require_path' => 'foo',
+      'name'         => 'SuccessfulTest',
+      'require_path' => File.expand_path('../fixtures/successful_generator', __FILE__),
     })
   }
 

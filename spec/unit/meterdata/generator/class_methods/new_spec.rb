@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 require 'meterdata-core/generator'
-require File.expand_path('../../fixtures/generator', __FILE__)
+require File.expand_path('../../fixtures/successful_generator', __FILE__)
 
 describe 'Meterdata::Generator.new' do
 
@@ -11,15 +11,15 @@ describe 'Meterdata::Generator.new' do
       Meterdata::Configuration::Generator.new({
         'version'      => '0.0.1',
         'name'         => name,
-        'require_path' => 'foo',
+        'require_path' => File.expand_path('../../fixtures/successful_generator', __FILE__),
       })
     }
 
     context 'with a known generator' do
 
-      let(:name) { 'Test' }
+      let(:name) { 'SuccessfulTest' }
 
-      it { should be_kind_of(Meterdata::Generator::Test) }
+      it { should be_kind_of(Meterdata::Generator::SuccessfulTest) }
 
     end
 
@@ -46,7 +46,7 @@ describe 'Meterdata::Generator.new' do
 
   context 'when called on a subclass' do
 
-    subject { Meterdata::Generator::Test.new(config) }
+    subject { Meterdata::Generator::SuccessfulTest.new(config) }
 
     it_should_behave_like 'instantiating a new generator'
 
