@@ -104,7 +104,7 @@ module Meterdata
         extend ClassMethods
 
         def revision
-          raise NotImplementedError, "Meterdata::Report::Metadata::VCS#revision must be implemented"
+          raise NotImplementedError, "#{self.class}#revision must be implemented"
         end
 
       end
