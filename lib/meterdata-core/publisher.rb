@@ -14,7 +14,7 @@ module Meterdata
     module ClassMethods # TODO use idiomatic ruby once solid and heckled
 
       def publish(config, report)
-        new(config, report).publish
+        new(config, report).run
       end
 
       def new(config, report)
@@ -41,19 +41,27 @@ module Meterdata
 
     def run
       before_publish
-      published = publish
+      self.published = publish
       after_publish
-      published
+      self
     end
 
     def publish
       raise NotImplementedError, "#{self.class}#publish must be implemented"
     end
 
+    def published?
+      @published
+    end
+
+  protected
+
+    attr_writer :published
+
   private
 
     def initialize(config, report)
-      @config, @report = config, report
+      @config, @report, @published = config, report, false
     end
 
     def before_publish; end

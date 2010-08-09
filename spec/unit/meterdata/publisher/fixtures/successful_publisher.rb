@@ -1,6 +1,6 @@
 module Meterdata
   class Publisher
-    class Test < Publisher
+    class SuccessfulTest < Publisher
 
       def publish
         result << 'publish'

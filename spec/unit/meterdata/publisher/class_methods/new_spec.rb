@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'spec_helper'
 
 require 'meterdata-core/publisher'
-require File.expand_path('../../fixtures/publisher', __FILE__)
+require File.expand_path('../../fixtures/successful_publisher', __FILE__)
 
 describe 'Meterdata::Publisher.new' do
 
@@ -21,9 +21,9 @@ describe 'Meterdata::Publisher.new' do
 
     context 'with a known publisher' do
 
-      let(:name) { 'Test' }
+      let(:name) { 'SuccessfulTest' }
 
-      it { should be_kind_of(Meterdata::Publisher::Test) }
+      it { should be_kind_of(Meterdata::Publisher::SuccessfulTest) }
 
     end
 
@@ -50,7 +50,7 @@ describe 'Meterdata::Publisher.new' do
 
   context 'when called on a subclass' do
 
-    subject { Meterdata::Publisher::Test.new(config, report) }
+    subject { Meterdata::Publisher::SuccessfulTest.new(config, report) }
 
     it_should_behave_like 'instantiating a new publisher'
 

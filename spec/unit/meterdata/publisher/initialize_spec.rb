@@ -2,9 +2,11 @@ require 'spec_helper'
 
 require 'meterdata-core/publisher'
 
-describe 'Meterdata::Publisher#config' do
+describe 'Meterdata::Publisher#published?' do
 
-  subject { publisher.config }
+  subject { Meterdata::Publisher.new(config, report) }
+
+  let(:report) { {} }
 
   let(:config) {
     Meterdata::Configuration::Publisher.new({
@@ -14,10 +16,10 @@ describe 'Meterdata::Publisher#config' do
     })
   }
 
-  let(:report) { {} }
+  its(:config) { should == config }
+  its(:report) { should == report }
 
-  let(:publisher) { Meterdata::Publisher.new(config, report) }
-
-  it { should == config }
+  it { subject.published?.should == false }
 
 end
+

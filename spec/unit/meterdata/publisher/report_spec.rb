@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 require 'meterdata-core/publisher'
-require File.expand_path('../fixtures/publisher', __FILE__)
 
 describe 'Meterdata::Publisher#report' do
 
@@ -10,8 +9,8 @@ describe 'Meterdata::Publisher#report' do
   let(:config) {
     Meterdata::Configuration::Publisher.new({
       'version'      => '0.0.1',
-      'name'         => 'Test',
-      'require_path' => 'foo',
+      'name'         => 'SuccessfulTest',
+      'require_path' => File.expand_path('../fixtures/successful_publisher', __FILE__),
     })
   }
 
