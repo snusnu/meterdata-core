@@ -1,5 +1,6 @@
 require 'json'
 
+require 'meterdata-core/exception'
 require 'meterdata-core/version'
 
 module Meterdata
@@ -44,9 +45,9 @@ module Meterdata
         array.map do |report|
           {
             'generator' => {
-              'name'    => report.generator.name,
-              'version' => report.generator.version,
-              'options' => report.generator.options,
+              'name'    => report.config.name,
+              'version' => report.config.version,
+              'options' => report.config.options,
             },
             'result' => report.result,
             'errors' => report.errors,
@@ -57,7 +58,7 @@ module Meterdata
       def engine(object)
         {
           'version' => object.version,
-          'log'     => object.log,
+          'log'     => object.logs,
         }
       end
 
@@ -68,80 +69,27 @@ module Meterdata
       class Engine
 
         attr_reader :version
-        attr_reader :logs
+        attr_reader :config
 
-        def initialize
-          @version, @logs = Meterdata::VERSION, {}
-        end
-
-        def log(level, key, message)
-          ((@logs[level.to_s] ||= {})[key.to_s] ||= []) << message.to_s
+        def initialize(config)
+          @version, @config = Meterdata::VERSION, config
         end
 
       end
 
-      class VCS
 
-        class Git < VCS
-
-          def revision
-            @revision ||= begin
-              revision = `git rev-parse HEAD`
-              revision =~ /fatal: Not a git repository/ ? nil : revision
-            end
-          end
-
-        end
-
-        module ClassMethods # TODO use idiomatic ruby once solid and heckled
-
-          def revision
-            Git.new.revision # always git for now
-          end
-
-        end # module ClassMethods
-
-        extend ClassMethods
-
-        def revision
-          raise NotImplementedError, "#{self.class}#revision must be implemented"
-        end
-
-      end
-
-      attr_reader :engine
       attr_reader :timestamp
-      attr_reader :revision
+      attr_reader :engine
       attr_reader :runtime
+      attr_reader :vcs
+      attr_reader :logs
 
-      def initialize
-        set_timestamp
-        set_revision
-        set_runtime
-        set_engine
-      end
-
-      def log(level, key, message)
-        engine.log(level, key, message)
-      end
-
-    private
-
-      def set_engine
-        @engine = Metadata::Engine.new
-      end
-
-      def set_timestamp
+      def initialize(config)
         @timestamp = Time.now.to_i
-      end
-
-      def set_revision
-        @revision = VCS.revision
-      end
-
-      def set_runtime
-        @runtime = {
-          'RUBY_COPYRIGHT'    => RUBY_COPYRIGHT,
+        @engine    = Metadata::Engine.new(config)
+        @vcs       = VCS.new(config.vcs.name)
+        @logs      = {}
+        @runtime   = {
           'RUBY_DESCRIPTION'  => RUBY_DESCRIPTION,
           'RUBY_ENGINE'       => RUBY_ENGINE,
           'RUBY_PLATFORM'     => RUBY_PLATFORM,
@@ -153,11 +101,42 @@ module Meterdata
 
     end
 
+    class Log
+
+      def self.levels
+        [:debug, :info, :warn, :error].freeze
+      end
+
+      levels.each do |level|
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def #{level}(message)
+            log(:#{level}, message)
+          end
+        RUBY
+      end
+
+      attr_reader :entries
+
+      def initialize
+        @entries = {}
+        self.class.levels.each do |level|
+          @entries[level] = []
+        end
+      end
+
+      def log(level, message)
+        entries[level.to_sym] << message.to_s
+      end
+
+    end
+
     attr_reader :metadata
     attr_reader :reports
+    attr_reader :log
 
-    def initialize
-      @metadata = Metadata.new
+    def initialize(config)
+      @metadata = Metadata.new(config)
+      @log      = Log.new
       @reports  = []
     end
 
@@ -165,13 +144,6 @@ module Meterdata
       @reports << report
     end
 
-    def log(level, key, message)
-      @metadata.log(level, key, message)
-    end
-
-    def serialize
-      Serializer.serialize(self)
-    end
-
   end # class Report
 end # module Meterdata
+
