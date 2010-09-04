@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/engine'
+require 'meterdata/engine'
 
 require 'spec/unit/meterdata/engine/shared/run_spec'
 

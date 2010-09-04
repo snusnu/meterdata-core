@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/configuration'
+require 'meterdata/configuration'
 
 require File.expand_path('../../parser/shared/parse_spec', __FILE__)
 

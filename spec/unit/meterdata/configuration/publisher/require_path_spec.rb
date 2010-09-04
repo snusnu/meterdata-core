@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/configuration'
+require 'meterdata/configuration'
 
 require File.expand_path('../../component/require_path_spec', __FILE__)
 

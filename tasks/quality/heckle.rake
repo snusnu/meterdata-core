@@ -27,7 +27,7 @@ begin
 
   desc 'Heckle each module and class'
   task :heckle => :verify_rcov do
-    require 'meterdata-core'
+    require 'meterdata'
     root_module = 'Meterdata'
 
     spec_dir = Pathname('spec/unit')

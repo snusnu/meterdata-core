@@ -1,7 +1,7 @@
 require 'spec'
 require 'spec/autorun'
 
-require 'meterdata-core'
+require 'meterdata'
 
 module Meterdata
   module Specs

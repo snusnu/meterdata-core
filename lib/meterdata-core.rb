@@ -1,1 +1,0 @@
-require 'meterdata-core/engine'

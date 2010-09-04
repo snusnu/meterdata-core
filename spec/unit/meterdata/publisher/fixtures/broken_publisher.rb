@@ -1,4 +1,4 @@
-require 'meterdata-core/publisher'
+require 'meterdata/publisher'
 
 module Meterdata
   class Publisher

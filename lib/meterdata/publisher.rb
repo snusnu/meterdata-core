@@ -1,6 +1,6 @@
-require 'meterdata-core/utils'
-require 'meterdata-core/component'
-require 'meterdata-core/exception'
+require 'meterdata/utils'
+require 'meterdata/component'
+require 'meterdata/exception'
 
 module Meterdata
 

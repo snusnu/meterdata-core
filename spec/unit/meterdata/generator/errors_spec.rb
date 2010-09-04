@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/generator'
+require 'meterdata/generator'
 require File.expand_path('../fixtures/successful_generator', __FILE__)
 
 describe 'Meterdata::Generator#errors' do

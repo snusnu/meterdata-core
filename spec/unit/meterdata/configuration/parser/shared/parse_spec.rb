@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/configuration'
+require 'meterdata/configuration'
 
 require File.expand_path('../../fixtures/broken_parser', __FILE__)
 

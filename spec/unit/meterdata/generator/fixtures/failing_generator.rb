@@ -1,4 +1,4 @@
-require 'meterdata-core/generator'
+require 'meterdata/generator'
 
 module Meterdata
   class Generator

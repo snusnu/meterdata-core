@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/report'
+require 'meterdata/report'
 
 require File.expand_path('../../fixtures/broken_vcs', __FILE__)
 

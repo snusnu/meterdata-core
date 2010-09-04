@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/configuration'
+require 'meterdata/configuration'
 
 describe 'Meterdata::Configuration#publishers' do
 

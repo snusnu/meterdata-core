@@ -1,36 +1,30 @@
 require 'spec_helper'
 
-require 'meterdata-core/report'
+require 'meterdata/report'
 
 describe 'Meterdata::Report::Metadata#revision' do
 
-  shared_examples_for 'a metadata revision' do
-
-    let(:metadata)  {
-      metadata = Meterdata::Report::Metadata.new
-      metadata.stub!(:revision).and_return(revision)
-      metadata
-    }
-
-    it { should == revision }
-
-  end
-
   subject { metadata.revision }
+
+  let(:metadata) { Meterdata::Report::Metadata.new }
+
+  before(:all) do
+    metadata.stub!(:raw_revision).and_return(raw_revision)
+  end
 
   context 'when inside a git repository' do
 
-    let(:revision) { `git rev-parse HEAD` }
+    let(:raw_revision) { 'foo' }
 
-    it_should_behave_like 'a metadata revision'
+    it { should == raw_revision }
 
   end
 
   context 'when not inside a git repository' do
 
-    let(:revision)  { nil }
+    let(:raw_revision)  { 'fatal: Not a git repository' }
 
-    it_should_behave_like 'a metadata revision'
+    it { should == nil }
 
   end
 

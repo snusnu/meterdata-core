@@ -1,7 +1,7 @@
 require 'json'
 
-require 'meterdata-core/exception'
-require 'meterdata-core/version'
+require 'meterdata/exception'
+require 'meterdata/version'
 
 module Meterdata
 

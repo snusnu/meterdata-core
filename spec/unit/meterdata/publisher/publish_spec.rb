@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/publisher'
+require 'meterdata/publisher'
 
 require File.expand_path('../fixtures/successful_publisher', __FILE__)
 require File.expand_path('../fixtures/failing_publisher', __FILE__)

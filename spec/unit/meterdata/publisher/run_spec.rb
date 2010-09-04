@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/publisher'
+require 'meterdata/publisher'
 
 require File.expand_path('../shared/run_spec', __FILE__)
 

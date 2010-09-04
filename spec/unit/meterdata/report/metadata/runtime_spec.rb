@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'meterdata-core/report'
+require 'meterdata/report'
 
 describe 'Meterdata::Report::Metadata#runtime' do
 

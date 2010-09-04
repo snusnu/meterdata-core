@@ -1,7 +1,7 @@
 require 'erb'
 
-require 'meterdata-core/utils'
-require 'meterdata-core/exception'
+require 'meterdata/utils'
+require 'meterdata/exception'
 
 module Meterdata
 

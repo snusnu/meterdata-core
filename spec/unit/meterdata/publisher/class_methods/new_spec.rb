@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'spec_helper'
 
-require 'meterdata-core/publisher'
+require 'meterdata/publisher'
 require File.expand_path('../../fixtures/successful_publisher', __FILE__)
 
 describe 'Meterdata::Publisher.new' do

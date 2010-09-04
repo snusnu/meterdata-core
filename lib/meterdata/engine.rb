@@ -1,8 +1,8 @@
-require 'meterdata-core/exception'
-require 'meterdata-core/configuration'
-require 'meterdata-core/generator'
-require 'meterdata-core/report'
-require 'meterdata-core/publisher'
+require 'meterdata/exception'
+require 'meterdata/configuration'
+require 'meterdata/generator'
+require 'meterdata/report'
+require 'meterdata/publisher'
 
 module Meterdata
 
@@ -10,15 +10,9 @@ module Meterdata
 
     class Reporter
 
-      module ClassMethods # TODO use idiomatic ruby once solid and heckled
-
-        def collect(config, report)
-          new(config, report).collect
-        end
-
-      end # module ClassMethods
-
-      extend ClassMethods
+      def self.collect(config, report)
+        new(config, report).collect
+      end
 
       def collect
         @report.add(generate)
@@ -60,22 +54,16 @@ module Meterdata
     end # class Reporter
 
 
-    module ClassMethods # TODO use idiomatic ruby once solid and heckled
-
-      def run(configuration)
-        new(configuration).run
-      end
-
-    end # module ClassMethods
-
-    extend ClassMethods
-
+    def self.run(configuration)
+      new(configuration).run
+    end
 
     attr_reader :config
     attr_reader :report
 
     def run
       collect
+      transform
       publish
       self
     end
@@ -91,6 +79,11 @@ module Meterdata
       config.generators.each do |config|
         Reporter.collect(config, report)
       end
+    end
+
+    def transform
+      config.transformers.each do |config|
+        Transformer.transform(config, report)
     end
 
     def publish
